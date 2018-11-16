@@ -95,7 +95,7 @@ void textFile( FILE *readPtr ) {
     } else {
         rewind( readPtr ); /* sets pointer to beginning of file */
 		fprintf( writePtr, "                               The retail record is shown below.\n." );
-		fprintf( writePtr, "%9s%8s%9s%6s%14s%14s%10s%7s    ||%13s%10s%10s\n%s\n", 
+		fprintf( writePtr, "%9s%8s%9s%6s%14s%14s%10s%7s   ||%13s%10s%10s\n%s\n", 
         		"Purchase_Date", "ItemNo", "Brand", "Scale", 
 				"Manufacture", "Detail", "Color", "Cost", "Sold_Date", "Revenue", "Profit",
 				"------------------------------------------------------------------------------------------------------------------------" );
