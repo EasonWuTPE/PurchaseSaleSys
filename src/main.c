@@ -2,18 +2,18 @@
 
 /* define a struct */
 struct item{
-	size_t ItemNo_Internal_USE;
-	size_t Purchase_Date;
-	char ItemNo[8];
-	char Brand[20];
-	char Scale[6];
+	size_t ItemNo_Internal_USE; /* Use it to locate the position of the record. */
+	size_t Purchase_Date; /* The merchandise purchase date */
+	char ItemNo[8]; /* The item number of merchandise defined by user */
+	char Brand[20]; /* The detail of merchandise */
+	char Scale[6]; 
 	char Manufacture[20];
 	char Detail_[20];
 	char Color[9];
-	size_t Cost;
-    size_t Sold_Date;
-	size_t Revenue;
-	size_t Profit;
+	size_t Cost; /* The purchase cost */
+    size_t Sold_Date; /* The date of merchandise sold */
+	size_t Revenue; /* The sold price of merchandise */
+	size_t Profit; /* The profits */
 };
 
 
@@ -167,36 +167,35 @@ void updateRecord( FILE *fPtr ) {
 
 /* delete an existing record */
 void deleteRecord( FILE *fPtr ) {
-	printf("Not yet");
-#if 0
+#if 1
 
-    struct detailData detail; /* stores record read from file */
-    struct detailData blankClient = { 0, "", "", 0 }; /* blank detail */
+    struct item read; /* stores record read from file */
+	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0 } ;
 
-    int accountNum; /* account number */
+    int account; /* account number */
 
     /* obtain number of account to delete */
     printf( "Enter account number to delete ( 1 - 100 ): " );
-    scanf( "%d", &accountNum );
+    scanf( "%d", &account );
 
     /* move file pointer to correct record in file */
-    fseek( fPtr, ( accountNum - 1 ) * sizeof( struct detailData ), 
+    fseek( fPtr, ( account - 1 ) * sizeof( struct item ), 
             SEEK_SET );
 
     /* read record from file */
-    fread( &detail, sizeof( struct detailData ), 1, fPtr );
+    fread( &read, sizeof( struct item ), 1, fPtr );
 
     /* display error if record does not exist */
-    if ( detail.acctNum == 0 ) {
-        printf( "Account %d does not exist.\n", accountNum );
+    if ( read.ItemNo_Internal_USE == 0 ) {
+        printf( "Account %d does not exist.\n", account );
     } else { /* delete record */
         /* move file pointer to correct record in file */
-        fseek( fPtr, ( accountNum - 1 ) * sizeof( struct detailData ), 
+        fseek( fPtr, ( account - 1 ) * sizeof( struct item ), 
                 SEEK_SET );
 
         /* replace existing record with blank record */
-        fwrite( &blankClient, 
-                sizeof( struct detailData ), 1, fPtr );
+        fwrite( &detail, 
+                sizeof( struct item ), 1, fPtr );
     } /* end else */
 #endif
 } /* end function deleteRecord */
@@ -249,12 +248,14 @@ int enterChoice( void ) {
 
     /* display available options */
     printf( "\nEnter your choice\n"
-            "1 - store a formatted text file of acounts called\n"
+            "1 - store a formatted text file of records called\n"
             "    \"DataBase.dat\" for printing\n"
-            "2 - update an account\n"
-            "3 - add a new account\n"
-            "4 - delete an account\n"
-            "5 - end program\n? " );
+            "2 - update an record\n"
+            "3 - add a new record\n"
+            "4 - delete an record\n"
+            "5 - end program\n "
+			"p.s. Account # - 1  = ItemNo \n? " );
+
 
     scanf( "%d", &menuChoice ); /* receive choice from user */
     return menuChoice;
