@@ -105,7 +105,7 @@ void textFile( FILE *readPtr ) {
 
             /* write single record to text file */
             if ( detail.ItemNo_Internal_USE != 0 ) {
-				fprintf( writePtr, "%4zu%13zu%8s%9s%6s%14s%14s%10s%7zu    ||%13zu%10zu%10zu\n",
+				fprintf( writePtr, "%4zu%14zu%8s%9s%6s%14s%14s%10s%7zu    ||%13zu%10zu%10zu\n",
 	        			detail.ItemNo_Internal_USE, detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
 						detail.Manufacture, detail.Detail_, detail.Color, detail.Cost,
 						detail.Sold_Date, detail.Revenue, detail.Profit );
