@@ -94,19 +94,19 @@ void textFile( FILE *readPtr ) {
         printf( "File could not be opened.\n" );
     } else {
         rewind( readPtr ); /* sets pointer to beginning of file */
-		fprintf( writePtr, "                               The retail record is shown below.\n." );
-		fprintf( writePtr, "%9s%8s%9s%6s%14s%14s%10s%7s   ||%13s%10s%10s\n%s\n", 
-        		"Purchase_Date", "ItemNo", "Brand", "Scale", 
+		fprintf( writePtr, "                               The retail record is shown below.\n" );
+		fprintf( writePtr, "%4s%14s%8s%9s%6s%14s%14s%10s%7s   ||%13s%10s%10s\n%s\n", 
+        		"No.", "Purchase_Date", "ItemNo", "Brand", "Scale", 
 				"Manufacture", "Detail", "Color", "Cost", "Sold_Date", "Revenue", "Profit",
-				"------------------------------------------------------------------------------------------------------------------------" );
+				"-----------------------------------------------------------------------------------------------------------------------------" );
         /* copy all records from random-access file into text file */
         while ( !feof( readPtr ) ) { 
             fread( &detail, sizeof( struct item ), 1, readPtr );
 
             /* write single record to text file */
             if ( detail.ItemNo_Internal_USE != 0 ) {
-				fprintf( writePtr, "%13zu%8s%9s%6s%14s%14s%10s%7zu    ||%13zu%10zu%10zu\n",
-	        			detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
+				fprintf( writePtr, "%4zu%13zu%8s%9s%6s%14s%14s%10s%7zu    ||%13zu%10zu%10zu\n",
+	        			detail.ItemNo_Internal_USE, detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
 						detail.Manufacture, detail.Detail_, detail.Color, detail.Cost,
 						detail.Sold_Date, detail.Revenue, detail.Profit );
             } /* end if */
