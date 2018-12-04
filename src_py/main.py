@@ -2,15 +2,10 @@
 
 # Purchase Sales System for Python Version 
 '''
- ItemNo
- Purchase_Date
- Spec: Describe the merchandises
- weight
- Cost
- Sold Date
- Revenue
- Profit 
- Profit Margin
+
+ Keys Reference: 
+ 	
+
 '''
 
 
@@ -21,7 +16,7 @@ def build_data( ):
 	Data = [] 
 
 	while True:
-		record_ = input( " Tnput the data: \n ItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" )  
+		record_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" )  
 		if record_:
 			# build a dict
 			try:
@@ -33,10 +28,12 @@ def build_data( ):
 		
 				Record = dict( ItemNo =  ItemNo, 
 							   Purchase_Date = Purchase_Date,
-							   Spec = [ item_class, color ],
-							   Forex = [ Forex, exchange_rate ],
-							   weight_kg = [ weight_kg, total_weight_TWD ],
-							   Cost = [  purchase_cost_Forex, purchase_cost_Forex*exchange_rate, purchase_cost_Forex*exchange_rate + total_weight_TWD ], 
+							   Spec = { "Class_Item":item_class, "Color":color },
+							   Forex = { "Forex":Forex, "ExchangeRate":exchange_rate },
+							   weight_kg = { "Weight(KG)":weight_kg, "Total_Weight_Price_(TWD)":total_weight_TWD },
+							   Cost = {  "Purchase_Cost_Forex":purchase_cost_Forex, 
+							   			 "Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate, 
+										 "Total_Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate + total_weight_TWD }, 
 							   Sold_Date = ".",
 							   Revenue = 0,
 							   Profit = 0, 
@@ -53,6 +50,7 @@ def build_data( ):
 	#print( len( Data ) ) 
 	for line in Data: 
 		print( line, file = fwrite ) 
+	fwrite.close() 
 
 # update_data function 
 def update_data():
@@ -61,6 +59,8 @@ def update_data():
 # delete_data function 
 def delete_data():
 	pass
+	AccNum = int( intput( "\n Choose the No. that you wnat to delete>> " ) ) 
+	#if dataAccNum-1
 
 # export_data function 
 def export_data():
@@ -74,13 +74,19 @@ def export_data():
 # Main Program 
 while True:
 	try:
-		choice = int( input( "  1 for adding record,\n  2 for updating the record,\n  3 for deleting record,\n  4 for exporting records,\n  5 for end. >> \n " ) ) 
+		print( "Input your choice: " ) 
+		choice = int( input( "  1 for adding record,\n  2 for updating the record,\n  3 for deleting record,\n  4 for exporting records,\n  5 for end.\n >> " ) ) 
 		if choice == 1:
 			build_data()
 		elif choice == 2: 
 			update_data() 
 		elif choice == 3: 
-			delete_data()
+			print( "\nAre you sure to delete specific record? <Y/n> " ) 
+			delete_or_not = input( ) 
+			if delete_or_not == 'Y' or delete_or_not == 'y':
+				delete_data()
+			else:
+				continue
 		elif choice == 4: 
 			export_data() 
 		elif choice == 5:
