@@ -30,7 +30,7 @@ def build_data( ):
 							   Purchase_Date = Purchase_Date,
 							   Spec = { "Class_Item":item_class, "Color":color },
 							   Forex = { "Forex":Forex, "ExchangeRate":exchange_rate },
-							   weight_kg = { "Weight(KG)":weight_kg, "Total_Weight_Price_(TWD)":total_weight_TWD },
+							   Weight_kg = { "Weight(KG)":weight_kg, "Weight_Price(TWD)":total_weight_TWD },
 							   Cost = {  "Purchase_Cost_Forex":purchase_cost_Forex, 
 							   			 "Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate, 
 										 "Total_Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate + total_weight_TWD }, 
@@ -64,7 +64,25 @@ def delete_data():
 
 # export_data function 
 def export_data():
-	pass
+	fread = open( r"./Files/records.dat" ) 
+	fstdout = open( r"./Files/PurchaseSaleReocrds.txt", "w+" ) 
+	fstdout.write( "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n"%( "No.", "Purchase_Date", "Class_Item", "Color", "Forex", "ExchangeRate", "Weight(KG)",
+																	  "Weight_Price(TWD)", "Purchase_Cost_Forex", "Purchase_Cost(TWD)", "Total_Purchase_Cost(TWD)",
+																	  "Sold_Date", "Revenue", "Profit", "Profit_Margin" ) ) 
+	
+	stdout_lines = [ lines for lines in fread ] 
+	for line_ in stdout_lines:
+		lines = eval( line_ )
+		#print( type(lines ) ) 
+		print( "%3s%14s%11s%6s%6s%13.2f%10.2f%18.2f%21.2f%18.2f%25.2f%11s%8.2f%7.2f%13.2f" %( lines["ItemNo"], lines["Purchase_Date"], lines["Spec"]["Class_Item"],
+																    							  lines["Spec"]["Color"], lines["Forex"]["Forex"], lines["Forex"]["ExchangeRate"],
+																								  lines["Weight_kg"]["Weight(KG)"], lines["Weight_kg"]["Weight_Price(TWD)"],
+																								  lines["Cost"]["Purchase_Cost_Forex"], lines["Cost"]["Purchase_Cost(TWD)"],
+																  				 				  lines["Cost"]["Total_Purchase_Cost(TWD)"], 
+																								  lines["Sold_Date"], lines["Revenue"], lines["Profit"], lines["Profit_Margin"] ), 
+																								  file = fstdout ) 
+	
+
 
 ''' --------------------------- Definition End ------------------------------------- ''' 
 
@@ -74,7 +92,7 @@ def export_data():
 # Main Program 
 while True:
 	try:
-		print( "Input your choice: " ) 
+		print( "\nInput your choice: " ) 
 		choice = int( input( "  1 for adding record,\n  2 for updating the record,\n  3 for deleting record,\n  4 for exporting records,\n  5 for end.\n >> " ) ) 
 		if choice == 1:
 			build_data()
