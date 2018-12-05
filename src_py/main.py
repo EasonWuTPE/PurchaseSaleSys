@@ -92,6 +92,10 @@ def delete_data():
 	AccNum = int( intput( "\n Choose the No. that you wnat to delete>> " ) ) 
 	#if dataAccNum-1
 
+# modify your record 
+def modified_data(): 
+	pass 
+
 # export_data function 
 def export_data():
 	fread = open( r"./Files/records.dat" ) 
@@ -124,7 +128,7 @@ def export_data():
 while True:
 	try:
 		print( "\nInput your choice: " ) 
-		choice = int( input( "  1 for adding record,\n  2 for updating the record,\n  3 for deleting record,\n  4 for exporting records,\n  5 for end.\n >> " ) ) 
+		choice = int(input( "  1 for adding record,\n  2 for updating the record,\n  3 for deleting record,\n  4 for modify records.\n  5 for exporting records,\n  6 for end.\n >> " )) 
 		if choice == 1:
 			build_data()
 		elif choice == 2: 
@@ -137,8 +141,10 @@ while True:
 			else:
 				continue
 		elif choice == 4: 
+			modified_data() 
+		elif choice == 5: 
 			export_data() 
-		elif choice == 5:
+		elif choice == 6:
 			break
 		else:
 			print( "\nUnexpected choice!!!! Try again!" ) 
