@@ -1,6 +1,11 @@
 #!/usr/bin/python3.5 
 
 # Purchase Sales System for Python Version 
+
+
+import copy 
+
+
 '''
 
  Keys Reference: 
@@ -52,9 +57,34 @@ def build_data( ):
 		print( line, file = fwrite ) 
 	fwrite.close() 
 
-# update_data function 
-def update_data():
-	pass
+# update_sell function 
+def sell_data():
+	try:
+		choice = int( input( "Enter the No. to record the sold. >> " ) ) 
+		lines_ = [ line for line in open( r"./Files/records.dat" ) ] 
+		#print( lines_ ) 
+		if choice > len(lines_): 
+			print( "The No. input is out of range." ) 
+		else:
+			sell_update = eval(lines_[ choice-1 ]) # dict  
+			update = input( "Input your sold date and revenue>> " ).split(' ') 
+			sell_update["Sold_Date"] = update[0] 
+			sell_update["Revenue"] = float(update[1])  
+			sell_update["Profit"] = float(sell_update["Revenue"]) - sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
+			sell_update["Profit_Margin"] = sell_update["Profit"] / sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
+			print( sell_update ) 
+			lines_[choice-1] = copy.copy( sell_update )
+
+			# Create a file to save data. 
+			fwrite = open( r"./Files/records.dat", "w" ) 
+			#print( len( Data ) ) 
+			for line in lines_: 
+				print( line, file = fwrite ) 
+			fwrite.close() 
+			
+	except ValueError: 
+		print( "Unexcepted input type!! Try again!! " ) 
+
 
 # delete_data function 
 def delete_data():
@@ -75,13 +105,14 @@ def export_data():
 		lines = eval( line_ )
 		#print( type(lines ) ) 
 		print( "%3s%14s%11s%6s%6s%13.2f%10.2f%18.2f%21.2f%18.2f%25.2f%11s%8.2f%7.2f%13.2f" %( lines["ItemNo"], lines["Purchase_Date"], lines["Spec"]["Class_Item"],
-																    							  lines["Spec"]["Color"], lines["Forex"]["Forex"], lines["Forex"]["ExchangeRate"],
-																								  lines["Weight_kg"]["Weight(KG)"], lines["Weight_kg"]["Weight_Price(TWD)"],
-																								  lines["Cost"]["Purchase_Cost_Forex"], lines["Cost"]["Purchase_Cost(TWD)"],
-																  				 				  lines["Cost"]["Total_Purchase_Cost(TWD)"], 
-																								  lines["Sold_Date"], lines["Revenue"], lines["Profit"], lines["Profit_Margin"] ), 
-																								  file = fstdout ) 
-	
+																    						  lines["Spec"]["Color"], lines["Forex"]["Forex"], lines["Forex"]["ExchangeRate"],
+																							  lines["Weight_kg"]["Weight(KG)"], lines["Weight_kg"]["Weight_Price(TWD)"],
+																							  lines["Cost"]["Purchase_Cost_Forex"], lines["Cost"]["Purchase_Cost(TWD)"],
+																  				 			  lines["Cost"]["Total_Purchase_Cost(TWD)"], 
+																							  lines["Sold_Date"], lines["Revenue"], lines["Profit"], lines["Profit_Margin"] ), 
+																							  file = fstdout ) 
+	fread.close() 
+	fstdout.close() 
 
 
 ''' --------------------------- Definition End ------------------------------------- ''' 
@@ -97,7 +128,7 @@ while True:
 		if choice == 1:
 			build_data()
 		elif choice == 2: 
-			update_data() 
+			sell_data() 
 		elif choice == 3: 
 			print( "\nAre you sure to delete specific record? <Y/n> " ) 
 			delete_or_not = input( ) 
