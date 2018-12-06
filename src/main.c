@@ -14,6 +14,7 @@ struct item{
     size_t Sold_Date; /* The date of merchandise sold */
 	size_t Revenue; /* The sold price of merchandise */
 	size_t Profit; /* The profits */
+	double ProfitMargin; 
 };
 
 
@@ -70,7 +71,7 @@ void RECREATE( void ){
 	
 	FILE *cPtr;
 
-	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0 } ;
+	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0, 0.0 };
 
 	if( ( cPtr = fopen( "DataBase.dat", "wb" ) ) == NULL ){
 		printf( "File couldn't be opened.\n" );
@@ -87,7 +88,7 @@ void textFile( FILE *readPtr ) {
     FILE *writePtr; /* DataBase.dat file pointer */
 
     /* create detailData with default information */
-	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0 } ;
+	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0, 0.0 } ;
 
     /* fopen opens the file; exits if file cannot be opened */
     if ( ( writePtr = fopen( "DataBase.txt", "w" ) ) == NULL ) {
@@ -95,20 +96,20 @@ void textFile( FILE *readPtr ) {
     } else {
         rewind( readPtr ); /* sets pointer to beginning of file */
 		fprintf( writePtr, "                               The retail record is shown below.\n" );
-		fprintf( writePtr, "%4s%14s%8s%9s%6s%14s%14s%10s%7s   ||%13s%10s%10s\n%s\n", 
+		fprintf( writePtr, "%4s%14s%8s%9s%6s%14s%14s%10s%7s    ||%13s%10s%10s%14s\n%s\n", 
         		"No.", "Purchase_Date", "ItemNo", "Brand", "Scale", 
-				"Manufacture", "Detail", "Color", "Cost", "Sold_Date", "Revenue", "Profit",
-				"-----------------------------------------------------------------------------------------------------------------------------" );
+				"Manufacture", "Detail", "Color", "Cost", "Sold_Date", "Revenue", "Profit", "ProfitMargin",
+				"-------------------------------------------------------------------------------------------------------------------------------------------" );
         /* copy all records from random-access file into text file */
         while ( !feof( readPtr ) ) { 
             fread( &detail, sizeof( struct item ), 1, readPtr );
 
             /* write single record to text file */
             if ( detail.ItemNo_Internal_USE != 0 ) {
-				fprintf( writePtr, "%4zu%14zu%8s%9s%6s%14s%14s%10s%7zu    ||%13zu%10zu%10zu\n",
+				fprintf( writePtr, "%4zu%14zu%8s%9s%6s%14s%14s%10s%7zu    ||%13zu%10zu%10zu%14.2f\n",
 	        			detail.ItemNo_Internal_USE, detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
 						detail.Manufacture, detail.Detail_, detail.Color, detail.Cost,
-						detail.Sold_Date, detail.Revenue, detail.Profit );
+						detail.Sold_Date, detail.Revenue, detail.Profit, detail.ProfitMargin );
             } /* end if */
         } /* end while */
 
@@ -123,7 +124,7 @@ void updateRecord( FILE *fPtr ) {
     int transaction; /* transaction amount */
 
     /* create detailData with no information */
-	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0 } ;
+	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0, 0.0 };
 
     /* obtain number of account to update */
     printf( "Enter internal-use item number to update ( 1 - 10000 ): " );
@@ -142,8 +143,7 @@ void updateRecord( FILE *fPtr ) {
     } else { /* update record */
 		printf( "%9zu%8s%9s%8s%14s%14s%10s%7zu\n",
     		detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
-			detail.Manufacture, detail.Detail_, detail.Color, detail.Cost,
-			detail.Sold_Date, detail.Revenue, detail.Profit );
+			detail.Manufacture, detail.Detail_, detail.Color, detail.Cost );
 
         /* request transaction amount from user */ 
         printf( "Enter the sold_Date, revenue: " );
@@ -151,10 +151,11 @@ void updateRecord( FILE *fPtr ) {
 		detail.Sold_Date = sold_Date;
         detail.Revenue = transaction; /* update record balance */
 		detail.Profit = detail.Revenue - detail.Cost;
-		printf( "%9zu%8s%9s%8s%14s%14s%10s%7zu\n",
+		detail.ProfitMargin =  ( (double)detail.Profit / (double)detail.Cost); 
+		printf( "%9zu%8s%9s%8s%14s%14s%10s%7zu%8zu%7zu%7.2lf\n",
     		detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
 			detail.Manufacture, detail.Detail_, detail.Color, detail.Cost,
-			detail.Sold_Date, detail.Revenue, detail.Profit );
+			detail.Sold_Date, detail.Revenue, detail.Profit, detail.ProfitMargin );
 
         /* move file pointer to correct record in file */
         fseek( fPtr, ( account - 1 ) * sizeof( struct item ), 
@@ -170,7 +171,7 @@ void deleteRecord( FILE *fPtr ) {
 #if 1
 
     struct item read; /* stores record read from file */
-	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0 } ;
+	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0, 0.0 } ;
 
     int account; /* account number */
 
@@ -203,7 +204,7 @@ void deleteRecord( FILE *fPtr ) {
 /* create and insert record */
 void newRecord( FILE *fPtr ) {
     /* create detailData with default information */
-	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0 } ;
+	struct item detail = { 0, 0, "", "", "", "", "", "", 0, 0, 0, 0, 0.0 } ;
 
     int accountNum; /* account number */
 
