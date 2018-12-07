@@ -47,7 +47,7 @@ def build_data( ):
 							   Profit_Margin = 0.0 ) 
 				Data.append( Record ) 
 			except:
-				print( "Unexpected input data type or format! Re-input again. Thanks!" ) 
+				print( "\nUnexpected input data type or format! Re-input again. Thanks!" ) 
 
 		else:
 			break;
