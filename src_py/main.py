@@ -19,15 +19,19 @@ import copy
 ''' --------------------------- Function Definition --------------------------------- ''' 
 # Build_data function 
 def build_data( ):
-	# Input the data.
-	Data = [] 
 
+	# Creat a list to place the inputed record_ 
+	Data = [] 
+	# Set i = 1 to ensure that the ItemNo. in acsending way. 
+	i = 1 
+
+	# Input data 
 	while True:
 		record_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" )  
 		if record_:
-			# build a dict
+			# Split str into list separated by space 
 			record_ = record_.split(' ') 
-			#print( "type: " ,type( record_ ) )
+			# Put record_ intp Data 
 			try: 
 				ItemNo = int(record_[0]); Purchase_Date = record_[1]; item_class = record_[2]; color = record_[3]; Forex = record_[4]; 
 				exchange_rate = float(record_[5]) if record_[4] != '.' else 1.0; 
@@ -45,16 +49,19 @@ def build_data( ):
 							   Revenue = 0,
 							   Profit = 0, 
 							   Profit_Margin = 0.0 ) 
+				if len(LINE_FREAD)+i != Record["ItemNo"]:
+					raise ValueError
+				i+=1
 				Data.append( Record ) 
-			except:
-				print( "\nUnexpected input data type or format! Re-input again. Thanks!" ) 
+			# If raise errors.
+			except: 
+				print( "\nUnexpected input data type, ItemNo. or format! Re-input again. Thanks!" ) 
 
 		else:
 			break;
 	
 	# Create a file to save data. 
 	fwrite = open( r"./Files/records.dat", "a+" ) 
-	#print( len( Data ) ) 
 	for line in Data: 
 		print( line, file = fwrite ) 
 	fwrite.close() 
@@ -63,27 +70,26 @@ def build_data( ):
 def sell_data():
 	try:
 		choice = int( input( "Enter the No. to record the sold. >> " ) ) 
-		lines_ = [ line.rstrip() for line in open( r"./Files/records.dat" ) ] 
-		open( r"./Files/records.dat" ).close() 
-		print( lines_ ) 
-		if choice > len(lines_): 
-			print( "The No. input is out of range." ) 
-		else:
-			sell_update = eval(lines_[ choice-1 ]) # dict  
-			update = input( "Input your sold date and revenue>> " ).rstrip().split(' ') 
-			sell_update["Sold_Date"] = update[0] 
-			sell_update["Revenue"] = float(update[1])  
-			sell_update["Profit"] = float(sell_update["Revenue"]) - sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
-			sell_update["Profit_Margin"] = sell_update["Profit"] / sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
-			#print( sell_update ) 
-			lines_[choice-1] = str( sell_update )
-			#print( lines_ ) 
+		
+		# choice out of range 
+		while choice > len(LINE_FREAD): 
+			print( "The No. input is out of range. Try again!!\n" ) 
+			choice = int( input( "Enter the No. to record the sold. >> " ) ) 
 
-			# Create a file to save data. 
-			fwrite = open( r"./Files/records.dat", "w" ) 
-			for line in lines_: 
-				print( line, file = fwrite ) 
-			fwrite.close() 
+		# Calculate the profit and profit margin 
+		sell_update = eval(LINE_FREAD[ choice-1 ]) # dict  
+		update = input( "Input your sold date and revenue>> " ).split(' ') 
+		sell_update["Sold_Date"] = update[0] 
+		sell_update["Revenue"] = float(update[1])  
+		sell_update["Profit"] = float(sell_update["Revenue"]) - sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
+		sell_update["Profit_Margin"] = sell_update["Profit"] / sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
+		LINE_FREAD[choice-1] = str( sell_update )
+			
+		# Overwritng the record.dat to new update.  
+		fwrite = open( r"./Files/records.dat", "w" ) 
+		for line in LINE_FREAD: 
+			print( line, file = fwrite ) 
+		fwrite.close() 
 			
 	except ValueError: 
 		print( "Unexcepted input type!! Try again!! " ) 
@@ -91,13 +97,20 @@ def sell_data():
 
 # delete_data function 
 def delete_data():
+	# Choose an AccNum to delete 
 	AccNum = int( input( "\n Choose the No. that you wnat to delete>> " ) ) 
+
+	# The chosen AccNum is out of range. 
 	while AccNum-1 >= len( LINE_FREAD ): 
 		print( "The No. inputed dosen't exist. Try again!!" ) 
 		AccNum = int( input( "Choose the No. that you wnat to delete or 'E' to return >> " ) ) 
 		if AccNum == 'E': 
 			break 
+
+	# Delete the chosen AccNum. 
 	LINE_FREAD.pop( AccNum-1 )
+
+	# Modify the ItemNo after the deleted AccNum. 
 	for i in LINE_FREAD[AccNum-1:]:   
 		change_No = eval( i ) 
 		change_No["ItemNo"] -= 1 
@@ -106,9 +119,8 @@ def delete_data():
 		#print( LINE_FREAD ) 
 			
 
-	# Create a file to save data. 
+	# Overwritng the record.dat to new update.  
 	fwrite = open( r"./Files/records.dat", "w" ) 
-	#print( len( Data ) ) 
 	for line in LINE_FREAD: 
 		print( line, file = fwrite ) 
 	fwrite.close() 
@@ -116,15 +128,19 @@ def delete_data():
 
 # insert_data function 
 def insert_data():
-	#pass
+	# Choose the AccNum position to insert 
 	AccNum = int( input( "\n Choose the No. that you wnat to insert> " ) ) 
+	# The AccNum is out of range. 
 	while AccNum-1 >= len( LINE_FREAD): 
 		print( "The No. inputed dosen't exist. Try again!!" ) 
 		AccNum = int( input( "Choose the No. that you wnat to delete or 'E' to return >> " ) ) 
 		if AccNum == 'E': 
 			break 
+	
+	# Input the inserted records. 
 	record_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" ).split(' ')  
-	# build a dict
+
+	# Make a new dict. 
 	try: 
 		ItemNo = int(record_[0]); Purchase_Date = record_[1]; item_class = record_[2]; color = record_[3]; Forex = record_[4]; 
 		exchange_rate = float(record_[5]) if record_[4] != '.' else 1.0; 
@@ -145,9 +161,10 @@ def insert_data():
 	except:
 		print( "\nUnexpected input data type or format! Re-input again. Thanks!" ) 
 
-
+	# Insert the new dict into the designated position.  
 	LINE_FREAD.insert( AccNum-1, Record )
 
+	# Modify the ItemNo after the inserted AccNum. 
 	for i in LINE_FREAD[AccNum:]:   
 		change_No = eval( i ) 
 		change_No["ItemNo"] += 1 
@@ -155,9 +172,8 @@ def insert_data():
 		LINE_FREAD.pop( change_No["ItemNo"] ) 
 		#print( LINE_FREAD ) 
 
-	# Create a file to save data. 
+	# Overwritng the record.dat to new update.  
 	fwrite = open( r"./Files/records.dat", "w" ) 
-	#print( len( Data ) ) 
 	for line in LINE_FREAD: 
 		print( line, file = fwrite ) 
 	fwrite.close() 
