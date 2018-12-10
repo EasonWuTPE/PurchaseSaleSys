@@ -56,34 +56,33 @@ def build_data( ):
 	fwrite = open( r"./Files/records.dat", "a+" ) 
 	#print( len( Data ) ) 
 	for line in Data: 
-		if line != ' ':
-			print( line, file = fwrite ) 
+		print( line, file = fwrite ) 
 	fwrite.close() 
 
 # update_sell function 
 def sell_data():
 	try:
 		choice = int( input( "Enter the No. to record the sold. >> " ) ) 
-		lines_ = [ line for line in open( r"./Files/records.dat" ) ] 
-		#print( lines_ ) 
+		lines_ = [ line.rstrip() for line in open( r"./Files/records.dat" ) ] 
+		open( r"./Files/records.dat" ).close() 
+		print( lines_ ) 
 		if choice > len(lines_): 
 			print( "The No. input is out of range." ) 
 		else:
 			sell_update = eval(lines_[ choice-1 ]) # dict  
-			update = input( "Input your sold date and revenue>> " ).split(' ') 
+			update = input( "Input your sold date and revenue>> " ).rstrip().split(' ') 
 			sell_update["Sold_Date"] = update[0] 
 			sell_update["Revenue"] = float(update[1])  
 			sell_update["Profit"] = float(sell_update["Revenue"]) - sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
 			sell_update["Profit_Margin"] = sell_update["Profit"] / sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
-			print( sell_update ) 
-			lines_[choice-1] = copy.copy( sell_update )
+			#print( sell_update ) 
+			lines_[choice-1] = str( sell_update )
+			#print( lines_ ) 
 
 			# Create a file to save data. 
 			fwrite = open( r"./Files/records.dat", "w" ) 
-			#print( len( Data ) ) 
 			for line in lines_: 
-				if line != ' ': 
-					print( line, file = fwrite ) 
+				print( line, file = fwrite ) 
 			fwrite.close() 
 			
 	except ValueError: 
@@ -99,15 +98,18 @@ def delete_data():
 		if AccNum == 'E': 
 			break 
 	LINE_FREAD.pop( AccNum-1 )
-	for num in LINE_FREAD[AccNum-1: ]: 
-		eval(num)["ItemNo"] -= 1 
+	for i in range( AccNum-1, len( LINE_FREAD ) ): 
+		substract = eval( LINE_FREAD[i] ) 
+		LINE_FREAD[i] 
+		print( type( substract ), substract ) 
+
+		
 
 	# Create a file to save data. 
 	fwrite = open( r"./Files/records.dat", "w" ) 
 	#print( len( Data ) ) 
 	for line in LINE_FREAD: 
-		if line!=' ': 
-			print( line, file = fwrite ) 
+		print( line, file = fwrite ) 
 	fwrite.close() 
 
 
@@ -182,7 +184,7 @@ def analysis_report():
 # Main Program 
 try:
 	FREAD = open( r"./Files/records.dat" )  
-	LINE_FREAD = [ LINES for LINES in FREAD ] 
+	LINE_FREAD = [ LINES.rstrip() for LINES in FREAD ] 
 except IOError:
 	pass 
 
