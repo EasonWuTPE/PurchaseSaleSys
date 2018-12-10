@@ -98,12 +98,13 @@ def delete_data():
 		if AccNum == 'E': 
 			break 
 	LINE_FREAD.pop( AccNum-1 )
-	for i in range( AccNum-1, len( LINE_FREAD ) ): 
-		substract = eval( LINE_FREAD[i] ) 
-		LINE_FREAD[i] 
-		print( type( substract ), substract ) 
-
-		
+	for i in LINE_FREAD[AccNum-1:]:   
+		change_No = eval( i ) 
+		change_No["ItemNo"] -= 1 
+		LINE_FREAD.insert( change_No["ItemNo"] - 1, change_No ) 
+		LINE_FREAD.pop( change_No["ItemNo"] ) 
+		#print( LINE_FREAD ) 
+			
 
 	# Create a file to save data. 
 	fwrite = open( r"./Files/records.dat", "w" ) 
@@ -116,21 +117,48 @@ def delete_data():
 # insert_data function 
 def insert_data():
 	#pass
-	AccNum = int( intput( "\n Choose the No. that you wnat to insert> " ) ) 
-	while dataAccNum-1 >= len( LINE_FREAD): 
+	AccNum = int( input( "\n Choose the No. that you wnat to insert> " ) ) 
+	while AccNum-1 >= len( LINE_FREAD): 
 		print( "The No. inputed dosen't exist. Try again!!" ) 
-		AccNum = int( intput( "Choose the No. that you wnat to delete or 'E' to return >> " ) ) 
+		AccNum = int( input( "Choose the No. that you wnat to delete or 'E' to return >> " ) ) 
 		if AccNum == 'E': 
 			break 
-	insert_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" ) 
-	LINE_FREAD.insert( AccNum-1, insert_ )
-	for num in range( AccNum-1, len(LINE_FREAD)+1 ): 
-		eval(num)["ItemNo"] += 1 
+	record_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" ).split(' ')  
+	# build a dict
+	try: 
+		ItemNo = int(record_[0]); Purchase_Date = record_[1]; item_class = record_[2]; color = record_[3]; Forex = record_[4]; 
+		exchange_rate = float(record_[5]) if record_[4] != '.' else 1.0; 
+		weight_kg = float(record_[6]); total_weight_TWD = float(record_[7]); purchase_cost_Forex = float(record_[8]);
+
+		Record = dict( ItemNo =  ItemNo, 
+					   Purchase_Date = Purchase_Date,
+					   Spec = { "Class_Item":item_class, "Color":color },
+					   Forex = { "Forex":Forex, "ExchangeRate":exchange_rate },
+					   Weight_kg = { "Weight(KG)":weight_kg, "Weight_Price(TWD)":total_weight_TWD },
+					   Cost = {  "Purchase_Cost_Forex":purchase_cost_Forex, 
+					   			 "Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate, 
+								 "Total_Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate + total_weight_TWD }, 
+					   Sold_Date = ".",
+					   Revenue = 0,
+					   Profit = 0, 
+					   Profit_Margin = 0.0 ) 
+	except:
+		print( "\nUnexpected input data type or format! Re-input again. Thanks!" ) 
+
+
+	LINE_FREAD.insert( AccNum-1, Record )
+
+	for i in LINE_FREAD[AccNum:]:   
+		change_No = eval( i ) 
+		change_No["ItemNo"] += 1 
+		LINE_FREAD.insert( change_No["ItemNo"]-1, change_No ) 
+		LINE_FREAD.pop( change_No["ItemNo"] ) 
+		#print( LINE_FREAD ) 
 
 	# Create a file to save data. 
 	fwrite = open( r"./Files/records.dat", "w" ) 
 	#print( len( Data ) ) 
-	for line in lines_: 
+	for line in LINE_FREAD: 
 		print( line, file = fwrite ) 
 	fwrite.close() 
 
