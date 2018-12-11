@@ -239,19 +239,19 @@ try:
 except IOError:
 	pass 
 
+action = { 1: build_data,
+		   2: sell_data, 
+	 	   3: warning, 
+		   4: insert_data, 
+		   5: modified_data, 
+		   6: export_data,
+		   7: analysis_report, 
+		   8: exit } 
 
 while True: 
 	try: 
 		print( "\nInput your choice: " ) 
 		choice = int(input( "  1 for adding record,\n  2 for updating the record,\n  3 for deleting record,\n  4 for insert record\n  5 for modify records.\n  6 for exporting records,\n  7 for analysis report\n  8 for end.\n >> " )) 
-		action = { 1: build_data,
-				   2: sell_data, 
-			 	   3: warning, 
-				   4: insert_data, 
-				   5: modified_data, 
-				   6: export_data,
-				   7: analysis_report, 
-				   8: exit } 
 		action[choice]() 
 	except KeyError:
 		print( "\nUnexpected type of choice!!!! Try again! " );
