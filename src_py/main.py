@@ -10,8 +10,23 @@ import copy
 
 '''
 
- Keys Reference: 
- 	
+ Variables Reference: 
+	*ItemNo: used for labelling the order of the data. 
+	*Purchase_Date: the date that purchase.
+	*Class_Item: the kind of goods
+	*Color: some detail of color.
+	*Forex: the currency used to purchase goods. Input ".", if used in TWD. 
+	*ExchangeRate: the exchange rate of the currency to TWD. Input 0.0 or "." if the Forex is TWD. 
+	*Weight(KG): the weight in measures of KG. 
+	*Weight_Price(TWD): the cost of the weight. 
+	*Purchase_Cost_Forex: the cost of the goods itself, excluding other cost like freight cost. Input the cost price directly if the currency is TWD.
+	 Total_Purchase_Cost(TWD): The total cost of goods in measures of TWD. 
+	*Sold_Date: The date that goods sold. 
+	*Revenue: Sold price.
+	 Profit: Revenue - Cost 
+	 Profit_Margin: Profit / Cost
+
+			* means that need to be input by user.
 
 '''
 
