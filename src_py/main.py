@@ -118,8 +118,7 @@ def delete_data():
 	for i in LINE_FREAD[AccNum-1:]:   
 		change_No = eval( i ) 
 		change_No["ItemNo"] -= 1 
-		LINE_FREAD.insert( change_No["ItemNo"] - 1, change_No ) 
-		LINE_FREAD.pop( change_No["ItemNo"] ) 
+		LINE_FREAD[change_No["ItemNo"] - 1 ] = str(change_No) 
 		#print( LINE_FREAD ) 
 			
 
@@ -173,8 +172,7 @@ def insert_data():
 	for i in LINE_FREAD[AccNum:]:   
 		change_No = eval( i ) 
 		change_No["ItemNo"] += 1 
-		LINE_FREAD.insert( change_No["ItemNo"]-1, change_No ) 
-		LINE_FREAD.pop( change_No["ItemNo"] ) 
+		LINE_FREAD[change_No["ItemNo"]-1] = str(change_No )
 		#print( LINE_FREAD ) 
 
 	# Overwritng the record.dat to new update.  
@@ -184,8 +182,12 @@ def insert_data():
 # modify your record 
 def modified_data(): 
 	modify_ = input( "Input the the No., column name and value that you want to modify. >> " ).split(' ') 
-	modify_reocrds = eval( LINE_FREAD[modify_[0]-1] ) 
-	print( modify_reocrds ) 
+	modify_reocrds = eval( LINE_FREAD[int(modify_[0])-1] ) 
+	modify_reocrds[modify_[1]] = modify_[2] 
+	LINE_FREAD[int(modify_[0])-1] = str( modify_reocrds ) 
+
+	# Overwritng the record.dat to new update.  
+	over_writing(LINE_FREAD) 
 		
 
 # Over writing the original file to save data. 
