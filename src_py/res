@@ -1,0 +1,32 @@
+
+Input your choice: 
+  1 for adding record,
+  2 for updating the record,
+  3 for deleting record,
+  4 for insert record
+  5 for modify records.
+  6 for exporting records,
+  7 for analysis report
+  8 for end.
+ >> Enter the No. to record the sold. >> ["{'ItemNo': 1, 'Purchase_Date': '2018/12/01', 'Forex': {'Forex': 'RMB', 'ExchangeRate': 4.2885}, 'Profit': 0, 'Spec': {'Class_Item': 'Notebook', 'Color': 'Blue'}, 'Sold_Date': '.', 'Profit_Margin': 0.0, 'Weight_kg': {'Weight(KG)': 0.8, 'Weight_Price(TWD)': 31.0}, 'Revenue': 0, 'Cost': {'Purchase_Cost_Forex': 17.38, 'Total_Purchase_Cost(TWD)': 105.53412999999999, 'Purchase_Cost(TWD)': 74.53412999999999}}", "{'ItemNo': 2, 'Purchase_Date': '2018/12/01', 'Forex': {'Forex': '.', 'ExchangeRate': 1.0}, 'Profit': 0, 'Spec': {'Class_Item': 'Notebook', 'Color': 'Red'}, 'Sold_Date': '.', 'Profit_Margin': 0.0, 'Weight_kg': {'Weight(KG)': 0.8, 'Weight_Price(TWD)': 31.0}, 'Revenue': 0, 'Cost': {'Purchase_Cost_Forex': 150.0, 'Total_Purchase_Cost(TWD)': 181.0, 'Purchase_Cost(TWD)': 150.0}}", "{'ItemNo': 3, 'Purchase_Date': '2018/12/02', 'Forex': {'Forex': 'RMB', 'ExchangeRate': 4.2885}, 'Profit': 0, 'Spec': {'Class_Item': 'Pen', 'Color': 'Blue'}, 'Sold_Date': '.', 'Profit_Margin': 0.0, 'Weight_kg': {'Weight(KG)': 0.21, 'Weight_Price(TWD)': 32.0}, 'Revenue': 0, 'Cost': {'Purchase_Cost_Forex': 4.31, 'Total_Purchase_Cost(TWD)': 50.483435, 'Purchase_Cost(TWD)': 18.483434999999997}}", "{'ItemNo': 4, 'Purchase_Date': '2018/12/02', 'Forex': {'Forex': '.', 'ExchangeRate': 1.0}, 'Profit': 0, 'Spec': {'Class_Item': 'Pen', 'Color': 'Red'}, 'Sold_Date': '.', 'Profit_Margin': 0.0, 'Weight_kg': {'Weight(KG)': 0.32, 'Weight_Price(TWD)': 21.0}, 'Revenue': 0, 'Cost': {'Purchase_Cost_Forex': 45.0, 'Total_Purchase_Cost(TWD)': 66.0, 'Purchase_Cost(TWD)': 45.0}}"]
+Input your sold date and revenue>> 
+Input your choice: 
+  1 for adding record,
+  2 for updating the record,
+  3 for deleting record,
+  4 for insert record
+  5 for modify records.
+  6 for exporting records,
+  7 for analysis report
+  8 for end.
+ >> 
+Input your choice: 
+  1 for adding record,
+  2 for updating the record,
+  3 for deleting record,
+  4 for insert record
+  5 for modify records.
+  6 for exporting records,
+  7 for analysis report
+  8 for end.
+ >> 
