@@ -39,18 +39,20 @@ def build_data( ):
 		
 				Record = dict( ItemNo =  ItemNo, 
 							   Purchase_Date = Purchase_Date,
-							   Spec = { "Class_Item":item_class, "Color":color },
-							   Forex = { "Forex":Forex, "ExchangeRate":exchange_rate },
-							   Weight_kg = { "Weight(KG)":weight_kg, "Weight_Price(TWD)":total_weight_TWD },
-							   Cost = {  "Purchase_Cost_Forex":purchase_cost_Forex, 
-							   			 "Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate, 
-										 "Total_Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate + total_weight_TWD }, 
+							   Class_Item = item_class, Color=color,
+							   Forex = Forex, ExchangeRate = exchange_rate,
+							   Weight_KG = weight_kg, Weight_Price_TWD = total_weight_TWD,
+							   Purchase_Cost_Forex=purchase_cost_Forex, 
+							   Purchase_Cost_TWD = purchase_cost_Forex*exchange_rate, 
+							   Total_Purchase_Cost_TWD = purchase_cost_Forex*exchange_rate + total_weight_TWD, 
 							   Sold_Date = ".",
 							   Revenue = 0,
 							   Profit = 0, 
 							   Profit_Margin = 0.0 ) 
-				if len(LINE_FREAD)+i != Record["ItemNo"]:
-					raise ValueError
+
+				if LINE_FREAD:
+					if len(LINE_FREAD)+i != Record["ItemNo"]:
+						raise ValueError
 				i+=1
 				Data.append( Record ) 
 			# If raise errors.
@@ -60,11 +62,9 @@ def build_data( ):
 		else:
 			break;
 	
-	# Create a file to save data. 
-	fwrite = open( r"./Files/records.dat", "a+" ) 
-	for line in Data: 
-		print( line, file = fwrite ) 
-	fwrite.close() 
+
+	# Overwritng the record.dat to new update.  
+	over_writing(Data) 
 
 # update_sell function 
 def sell_data():
@@ -81,15 +81,12 @@ def sell_data():
 		update = input( "Input your sold date and revenue>> " ).split(' ') 
 		sell_update["Sold_Date"] = update[0] 
 		sell_update["Revenue"] = float(update[1])  
-		sell_update["Profit"] = float(sell_update["Revenue"]) - sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
-		sell_update["Profit_Margin"] = sell_update["Profit"] / sell_update["Cost"]["Total_Purchase_Cost(TWD)"] 
+		sell_update["Profit"] = float(sell_update["Revenue"]) - sell_update["Total_Purchase_Cost_TWD"] 
+		sell_update["Profit_Margin"] = sell_update["Profit"] / sell_update["Total_Purchase_Cost_TWD"] 
 		LINE_FREAD[choice-1] = str( sell_update )
 			
 		# Overwritng the record.dat to new update.  
-		fwrite = open( r"./Files/records.dat", "w" ) 
-		for line in LINE_FREAD: 
-			print( line, file = fwrite ) 
-		fwrite.close() 
+		over_writing(LINE_FREAD) 
 			
 	except ValueError: 
 		print( "Unexcepted input type!! Try again!! " ) 
@@ -127,10 +124,7 @@ def delete_data():
 			
 
 	# Overwritng the record.dat to new update.  
-	fwrite = open( r"./Files/records.dat", "w" ) 
-	for line in LINE_FREAD: 
-		print( line, file = fwrite ) 
-	fwrite.close() 
+	over_writing(LINE_FREAD) 
 
 
 # insert_data function 
@@ -155,16 +149,20 @@ def insert_data():
 
 		Record = dict( ItemNo =  ItemNo, 
 					   Purchase_Date = Purchase_Date,
-					   Spec = { "Class_Item":item_class, "Color":color },
-					   Forex = { "Forex":Forex, "ExchangeRate":exchange_rate },
-					   Weight_kg = { "Weight(KG)":weight_kg, "Weight_Price(TWD)":total_weight_TWD },
-					   Cost = {  "Purchase_Cost_Forex":purchase_cost_Forex, 
-					   			 "Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate, 
-								 "Total_Purchase_Cost(TWD)":purchase_cost_Forex*exchange_rate + total_weight_TWD }, 
+					   Class_Item = item_class, 
+					   Color=color,
+					   Forex = Forex, 
+					   ExchangeRate = exchange_rate,
+					   Weight_KG = weight_kg, 
+					   Weight_Price_TWD = total_weight_TWD,
+					   Purchase_Cost_Forex = purchase_cost_Forex, 
+					   Purchase_Cost_TWD = purchase_cost_Forex*exchange_rate, 
+					   Total_Purchase_Cost_TWD = purchase_cost_Forex*exchange_rate + total_weight_TWD, 
 					   Sold_Date = ".",
 					   Revenue = 0,
 					   Profit = 0, 
 					   Profit_Margin = 0.0 ) 
+
 	except:
 		print( "\nUnexpected input data type or format! Re-input again. Thanks!" ) 
 
@@ -180,10 +178,7 @@ def insert_data():
 		#print( LINE_FREAD ) 
 
 	# Overwritng the record.dat to new update.  
-	fwrite = open( r"./Files/records.dat", "w" ) 
-	for line in LINE_FREAD: 
-		print( line, file = fwrite ) 
-	fwrite.close() 
+	over_writing(LINE_FREAD) 
 
 
 # modify your record 
@@ -193,6 +188,13 @@ def modified_data():
 	print( modify_reocrds ) 
 		
 
+# Over writing the original file to save data. 
+def over_writing(Data):
+	fwrite = open( r"./Files/records.dat", "w" ) 
+	for line in Data: 
+		print( line, file = fwrite ) 
+	fwrite.close() 
+	
 
 # export_data function 
 def export_data():
@@ -208,11 +210,11 @@ def export_data():
 		lines = eval( line_ )
 		#print( type(lines ) ) 
 		try:
-			print( "%3s%14s%11s%6s%6s%13.2f%10.2f%18.2f%21.2f%18.2f%25.2f%11s%8.2f%7.2f%13.2f" %( lines["ItemNo"], lines["Purchase_Date"], lines["Spec"]["Class_Item"],
-																    						  lines["Spec"]["Color"], lines["Forex"]["Forex"], lines["Forex"]["ExchangeRate"],
-																							  lines["Weight_kg"]["Weight(KG)"], lines["Weight_kg"]["Weight_Price(TWD)"],
-																							  lines["Cost"]["Purchase_Cost_Forex"], lines["Cost"]["Purchase_Cost(TWD)"],
-																  				 			  lines["Cost"]["Total_Purchase_Cost(TWD)"], 
+			print( "%3s%14s%11s%6s%6s%13.2f%10.2f%18.2f%21.2f%18.2f%25.2f%11s%8.2f%7.2f%13.2f" %( lines["ItemNo"], lines["Purchase_Date"], lines["Class_Item"],
+																    						  lines["Color"], lines["Forex"], lines["ExchangeRate"],
+																							  lines["Weight_KG"], lines["Weight_Price_TWD"],
+																							  lines["Purchase_Cost_Forex"], lines["Purchase_Cost_TWD"],
+																  				 			  lines["Total_Purchase_Cost_TWD"], 
 																							  lines["Sold_Date"], lines["Revenue"], lines["Profit"], lines["Profit_Margin"] ), 
 																							  file = fstdout )
 		except EOFError: 
