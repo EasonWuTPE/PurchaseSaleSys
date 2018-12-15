@@ -196,13 +196,20 @@ def insert_data():
 
 # modify your record 
 def modified_data(): 
-	modify_ = input( "Input the the No., column name and value that you want to modify. >> " ).split(' ') 
-	modify_reocrds = eval( LINE_FREAD[int(modify_[0])-1] ) 
-	modify_reocrds[modify_[1]] = modify_[2] 
-	LINE_FREAD[int(modify_[0])-1] = str( modify_reocrds ) 
 
-	# Overwritng the record.dat to new update.  
-	over_writing(LINE_FREAD) 
+		while True:
+			modify_ = input( "Input the the No., column name and value that you want to modify. >> " ).split(' ') 
+			modify_reocrds = eval( LINE_FREAD[int(modify_[0])-1] ) 
+			if modify_[1] in modify_reocrds.keys() :
+				modify_reocrds[modify_[1]] = modify_[2] 
+				LINE_FREAD[int(modify_[0])-1] = str( modify_reocrds ) 
+	
+				# Overwritng the record.dat to new update.  
+				over_writing(LINE_FREAD)
+				break;
+			else: 
+				print( "The columns you input does not exist. Try again!! " ) 
+
 		
 
 # Over writing the original file to save data. 
