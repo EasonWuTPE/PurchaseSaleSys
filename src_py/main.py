@@ -64,11 +64,13 @@ def build_data( ):
 							   Revenue = 0,
 							   Profit = 0, 
 							   Profit_Margin = 0.0 ) 
-
-				if LINE_FREAD:
-					if len(LINE_FREAD)+i != Record["ItemNo"]:
-						raise ValueError
-				i+=1
+				try: 
+					if LINE_FREAD:
+						if len(LINE_FREAD)+i != Record["ItemNo"]:
+							raise ValueError
+						i+=1
+				except: 
+					pass 
 				Data.append( Record ) 
 			# If raise errors.
 			except: 
@@ -260,9 +262,10 @@ def analysis_report():
 ''' --------------------------------- Main ----------------------------------------- ''' 
 # Main Program 
 try:
-	FREAD = open( r"./Files/records.dat" )  
+	FREAD = open( r"./Files/records.dat")  
 	LINE_FREAD = [ LINES.rstrip() for LINES in FREAD ] 
 except IOError:
+	print( "Here") 
 	pass 
 
 action = { 1: build_data,
