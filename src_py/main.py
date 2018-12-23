@@ -1,12 +1,12 @@
 #!/usr/bin/python3.5 
 
 # Purchase Sales System for Python Version 
-
+'''
 import numpy as np
 import matplotlib.pyplot as plt 
 import pandas as pd 
 import copy 
-
+'''
 
 '''
 
