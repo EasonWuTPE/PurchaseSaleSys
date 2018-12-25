@@ -35,10 +35,6 @@ import copy
 # Build_data function 
 def build_data( ):
 
-	# Creat a list to place the inputed record_ 
-	Data = [] 
-	# Set i = 1 to ensure that the ItemNo. in acsending way. 
-	i = 1 
 
 	# Input data 
 	while True:
@@ -64,24 +60,22 @@ def build_data( ):
 							   Revenue = 0,
 							   Profit = 0, 
 							   Profit_Margin = 0.0 ) 
-				try: 
-					if LINE_FREAD:
-						if len(LINE_FREAD)+i != Record["ItemNo"]:
-							raise ValueError
-						i+=1
-				except: 
-					pass 
-				Data.append( Record ) 
+
+				if len(LINE_FREAD)+1 != Record["ItemNo"]:
+					print( "ERROR ItemNo.\n" ) 
+					raise ValueError 
+				LINE_FREAD.append( Record ) 
+				#print( "Program still run Data.appen()" )
 			# If raise errors.
 			except: 
-				print( "\nUnexpected input data type, ItemNo. or format! Re-input again. Thanks!" ) 
+				print( "\nUnexpected input data type or format! Re-input again. Thanks!" ) 
 
 		else:
 			break;
 	
 
 	# Overwritng the record.dat to new update.  
-	over_writing(Data) 
+	over_writing(LINE_FREAD) 
 
 # update_sell function 
 def sell_data():
@@ -265,8 +259,11 @@ try:
 	FREAD = open( r"./Files/records.dat")  
 	LINE_FREAD = [ LINES.rstrip() for LINES in FREAD ] 
 except IOError:
+	LINE_FREAD=[] 
 	print( "Here") 
 	pass 
+
+print("LINE_FREAD",LINE_FREAD) 
 
 action = { 1: build_data,
 		   2: sell_data, 
