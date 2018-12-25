@@ -37,11 +37,6 @@ class Action():
 	# Build_data function 
 	def build_data(self):
 	
-		# Creat a list to place the inputed record_ 
-		Data = [] 
-		# Set i = 1 to ensure that the ItemNo. in acsending way. 
-		i = 1 
-	
 		# Input data 
 		while True:
 			record_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" )  
