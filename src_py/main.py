@@ -36,7 +36,7 @@ import copy
 def build_data( ):
 
 
-	# Input data 
+        # Input data 
 	while True:
 		record_ = input( "Input the data: \nItemNo, Purchase Date, item_class, color, Forex, exchange_rate, weight(kg), weight cost(TWD), Purchase cost (Forex) >>\n" )  
 		if record_:
