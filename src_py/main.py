@@ -260,10 +260,10 @@ try:
 	LINE_FREAD = [ LINES.rstrip() for LINES in FREAD ] 
 except IOError:
 	LINE_FREAD=[] 
-	print( "Here") 
+	#print( "Here") 
 	pass 
 
-print("LINE_FREAD",LINE_FREAD) 
+#print("LINE_FREAD",LINE_FREAD) 
 
 action = { 1: build_data,
 		   2: sell_data, 
