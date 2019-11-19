@@ -152,7 +152,7 @@ void updateRecord( FILE *fPtr ) {
         detail.Revenue = transaction; /* update record balance */
 		detail.Profit = detail.Revenue - detail.Cost;
 		detail.ProfitMargin =  ( (double)detail.Profit / (double)detail.Cost); 
-		printf( "%9zu%8s%9s%8s%14s%14s%10s%7zu%9zu%7zu%7.2lf\n",
+		printf( "%9zu%8s%9s%8s%14s%14s%10s%7zu%9zu%7zu%7zu%7.2lf\n",
     		detail.Purchase_Date, detail.ItemNo, detail.Brand, detail.Scale, 
 			detail.Manufacture, detail.Detail_, detail.Color, detail.Cost,
 			detail.Sold_Date, detail.Revenue, detail.Profit, detail.ProfitMargin );
