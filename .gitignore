@@ -4,3 +4,5 @@ usr_/main
 user_/in 
 src_py/
 src_gui_py/
+**/*.o
+PurchaseSaleSys/**/*.o
