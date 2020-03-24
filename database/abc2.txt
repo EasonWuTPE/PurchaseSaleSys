@@ -1,0 +1,4 @@
+                               The retail record is shown below.
+ No. Purchase_Date  ItemNo    Brand Scale   Manufacture        Detail     Color   Cost    ||    Sold_Date   Revenue    Profit  ProfitMargin
+-------------------------------------------------------------------------------------------------------------------------------------------
+   1      20200101    dds1     nike  1/43           dos         sport     black   1000    ||            0         0         0          0.00
